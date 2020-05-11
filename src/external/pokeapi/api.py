@@ -1,4 +1,5 @@
 import requests
+import json
 
 BASE_URL = 'http://pokeapi.co/api/v2'
 ENDPOINTS = {
@@ -15,5 +16,6 @@ def call_api(endpoint, query):
         return None
 
 def pokemon_data(pokemon_name):
-    response = call_api(ENDPOINTS['pokemon-data'], pokemon_name)
-    return response.json()
+    response = call_api(ENDPOINTS['pokemon-data'], pokemon_name).text
+    return json.loads(response)
+
