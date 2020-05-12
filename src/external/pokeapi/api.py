@@ -1,10 +1,18 @@
 import requests
+import os
 import json
 
 BASE_URL = 'http://pokeapi.co/api/v2'
 ENDPOINTS = {
     'pokemon-data' : 'pokemon'
 }
+
+def dump_json_to_disk(endpoint, name, json_file):
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    filename = current_path + '/cache/' + endpoint + '/' + name 
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, 'w') as file:
+        json.dump(json_file, file)
 
 def call_api(endpoint, query):
     url = BASE_URL + '/' + endpoint + '/' + query
@@ -17,5 +25,7 @@ def call_api(endpoint, query):
 
 def pokemon_data(pokemon_name):
     response = call_api(ENDPOINTS['pokemon-data'], pokemon_name).text
-    return json.loads(response)
+    json_file = json.loads(response)
+    dump_json_to_disk(ENDPOINTS['pokemon-data'], pokemon_name, json_file)
+    return json_file
 

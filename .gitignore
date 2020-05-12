@@ -1,2 +1,5 @@
 pokedex.egg-info/
 __pycache__/
+cache/
+/cache/
+src/external/pokeapi/cache/
