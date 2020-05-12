@@ -1,4 +1,7 @@
 
+
+
+
 # [{'slot': 2, 'type': {'name': 'flying', 'url': 'https://pokeapi.co/api/v2/type/3/'}}, {'slot': 1, 'type': {'name': 'fire', 'url': 'https://pokeapi.co/api/v2/type/10/'}}]
 # [{'slot': 1, 'type': {'name': 'fire', 'url': 'https://pokeapi.co/api/v2/type/10/'}}]
 def extract_types(type_data):

@@ -14,6 +14,15 @@ def dump_json_to_disk(endpoint, name, json_file):
     with open(filename, 'w') as file:
         json.dump(json_file, file)
 
+def fetch_from_cache(endpoint, name):
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    filename = current_path + '/cache/' + endpoint + '/' + name
+    if os.path.isfile(filename):
+        file = open(filename)
+        return json.load(file)
+    else:
+        return None
+
 def call_api(endpoint, query):
     url = BASE_URL + '/' + endpoint + '/' + query
 
@@ -24,8 +33,13 @@ def call_api(endpoint, query):
         return None
 
 def pokemon_data(pokemon_name):
-    response = call_api(ENDPOINTS['pokemon-data'], pokemon_name).text
-    json_file = json.loads(response)
-    dump_json_to_disk(ENDPOINTS['pokemon-data'], pokemon_name, json_file)
-    return json_file
+    required_endpoint = ENDPOINTS['pokemon-data']
+    cache_response = fetch_from_cache(required_endpoint, pokemon_name)
+    if cache_response != None:
+        return cache_response
+    else:
+        response = call_api(ENDPOINTS['pokemon-data'], pokemon_name).text
+        json_file = json.loads(response)
+        dump_json_to_disk(ENDPOINTS['pokemon-data'], pokemon_name, json_file)
+        return json_file
 
