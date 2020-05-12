@@ -1,9 +1,14 @@
 import sys
 import src.external.pokeapi.pokeapi as pokeapi
 
+valid_operations = {
+    'weak'
+}
+
 def main():
-    print("Pokemon:", sys.argv[1])
-    print("Type:", pokeapi.get_pokemon_type(sys.argv[1]))
+    arg_size = len(sys.argv)
+    pokeapi.build_pokemon_list_cache()
+
 
 if __name__ == 'main':
     main()

@@ -1,11 +1,33 @@
 import requests
 import os
 import json
+import pickle
 
 BASE_URL = 'http://pokeapi.co/api/v2'
 ENDPOINTS = {
     'pokemon-data' : 'pokemon'
 }
+
+def build_pokemon_list_cache():
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    filename = current_path + '/cache/pokemon_list'
+    if os.path.isfile(filename):
+        pass
+    else:
+        url = BASE_URL + '/pokemon/?offset=0&limit=2000'
+        r = requests.get(url).text
+        data = json.loads(r)
+
+        pokemon_list = list()
+
+        poke_no = int(data['count'])
+
+        for i in range(0, poke_no):
+            pokemon_list.append(data['results'][i]['name'])
+
+        poke_list = set(pokemon_list)
+        with open(filename, 'wb') as fp:
+            pickle.dump(poke_list, fp)
 
 def dump_json_to_disk(endpoint, name, json_file):
     current_path = os.path.dirname(os.path.abspath(__file__))
